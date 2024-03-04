@@ -1,0 +1,300 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+    Ubuntu, Cantarell, "Open Sans", "Helvetica Neue";
+}
+
+body {
+  background-color: (0, 0, 0, 0.5);
+}
+
+nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 99;
+  background-color: rgb(15, 15, 29);
+  border-bottom: 3px solid purple;
+  opacity: 0;
+  transition: 1.2s ease;
+}
+
+.navcontainer {
+  /* background-color: aliceblue; */
+  max-width: 1600px;
+  padding: 16px 128px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.navh1 {
+  display: flex;
+  /* background-color: orangered; */
+  justify-content: start;
+  color: whitesmoke;
+  font-size: 25px;
+  font-weight: 800;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  align-items: center;
+}
+
+.menu {
+  /* background-color: pink; */
+  display: none;
+  flex: 1 1 0%;
+  justify-content: flex-end;
+  margin: 0-16px;
+  margin-left: 5px;
+}
+
+.menu a {
+  color: whitesmoke;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 16px;
+  font-weight: 600;
+  font-size: 18px;
+  text-decoration: none;
+  transition: 0.4s;
+  padding: 8px 5px;
+  border-radius: 100px;
+}
+
+.menu a span {
+  margin-left: 0.3em;
+}
+
+.menu a.active,
+.menu a:hover {
+  background-color: purple;
+}
+
+.menu a:hover {
+  transform: translateX(5px);
+}
+
+.profile {
+  cursor: pointer;
+  position: relative;
+}
+
+.sub-menu-wrap {
+  position: absolute;
+  top: 100%;
+  right: 0%;
+  max-width: 320px;
+  max-height: 0px;
+  overflow: hidden;
+  transition: max-height 0.5s;
+}
+
+.sub-menu-wrap.open-menu {
+  max-height: 200px;
+}
+
+.sub-menu {
+  background: white;
+  padding: 20px;
+  margin: 10px;
+  border-radius: 12px;
+}
+
+#close-btn {
+  display: flex;
+  justify-content: flex-end;
+  right: 0%;
+  top: 150%;
+  font-weight: 400;
+  cursor: pointer;
+  margin-bottom: 5px;
+}
+
+.sub-menu .user-info {
+  display: flex;
+  align-items: center;
+  font-weight: 700;
+}
+
+.sub-menu .user-info i {
+  margin-right: 5px;
+}
+
+.sub-menu hr {
+  border: 0;
+  height: 1px;
+  width: 100%;
+  background: #ccc;
+  margin: 15px 0 10px;
+}
+
+.sub-menu .sub-menu-link a {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  color: #525252;
+  margin: 12px 0px 0;
+}
+
+.sub-menu-link p {
+  width: 100%;
+  font-weight: 500;
+}
+
+.sub-menu-link span {
+  transition: transform 0.5s;
+}
+
+.sub-menu span.icon {
+  width: 40px;
+  background: #ccc;
+  border-radius: 50%;
+  padding: 8px;
+  margin-right: 15px;
+}
+
+.sub-menu span.arrow {
+  font-size: 20px;
+}
+
+.sub-menu-link:hover span.arrow {
+  transform: translateX(3px);
+  color: purple;
+}
+
+.sub-menu-link:hover p {
+  font-weight: 650;
+}
+
+#close-btn:hover {
+  font-weight: 500;
+  color: purple;
+  font-size: 17px;
+}
+
+nav:hover {
+  opacity: 1;
+}
+
+.hamburger {
+  position: relative;
+  display: block;
+  cursor: pointer;
+  width: 35px;
+
+  appearance: none;
+  outline: none;
+  background: none;
+  border: none;
+}
+
+.hamburger .bar,
+.hamburger::after,
+.hamburger::before {
+  display: block;
+  content: "";
+  width: 100%;
+  height: 5px;
+  background-color: #fff;
+  margin: 6px 0;
+  transition: 0.4s ease;
+}
+
+.hamburger:hover .bar {
+  transform: translateX(5px);
+  background-color: purple;
+}
+
+/* To make X symbol whn active */
+.hamburger.is-active::before {
+  transform: rotate(-45deg) translate(-8px, 6px);
+}
+
+.hamburger.is-active .bar {
+  opacity: 0;
+}
+
+.hamburger.is-active::after {
+  transform: rotate(45deg) translate(-9px, -8px);
+}
+
+.mobile-nav {
+  display: block;
+  position: fixed;
+  top: 0;
+  left: 100%;
+  width: 100%;
+  min-height: 100vh;
+  z-index: 98;
+  /* background-color: #fff; */
+  padding-top: 120px;
+  background-color: rgb(15, 15, 29);
+  transition: 0.4s ease;
+}
+
+.mobile-nav.is-active {
+  left: 0;
+}
+
+.mobile-nav a {
+  display: block;
+  width: 100%;
+  max-width: 200px;
+  margin: 0 auto 16px;
+  text-align: center;
+  padding: 12px 16px;
+  background-color: #1f103f;
+  color: #fff;
+  text-decoration: none;
+  transition: 0.4s ease;
+}
+
+.mobile-nav a:hover {
+  background-color: #24104f;
+  transform: translateX(5px);
+}
+
+@media (width > 850px) {
+  .hamburger {
+    display: none;
+  }
+
+  .mobile-nav {
+    display: none;
+  }
+
+  .menu {
+    display: flex;
+  }
+}
+
+/* Tablet */
+/* After The Tablet point we want the menu to be visible all the time because the hover effect is not
+Very practical in touch devices */
+@media (width < 1024px) {
+  .navcontainer {
+    padding: 8px 64px;
+  }
+
+  nav {
+    opacity: 1;
+  }
+}
+
+@media (width < 850px) {
+  .navcontainer {
+    padding: 4px 32px;
+  }
+}
+
+@media (width < 480px) {
+  .navcontainer {
+    padding: 2px 16px;
+  }
+}

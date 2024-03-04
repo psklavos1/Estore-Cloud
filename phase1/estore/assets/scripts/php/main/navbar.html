@@ -1,0 +1,146 @@
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>NavBar</title>
+    <!-- CSS -->
+    <link rel="stylesheet" href="../../../css/navbar_style.css" />
+    <!-- JQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <!-- Icons Fontawsome -->
+    <script
+      src="https://kit.fontawesome.com/bfda754cdd.js"
+      crossorigin="anonymous"
+    ></script>
+  </head>
+  <body>
+    <!-- Desktop Navbar -->
+    <nav class="navclass">
+      <div class="navcontainer">
+        <div class="navh1"> 
+          <h1><span style="color: purple">MY</span>Store</h1>
+        </div>
+        
+        <div class="menu">
+          <a href="./welcome.php" class="active">
+            <i class="fa-solid fa-shop"></i>
+            <span>Home</span>
+          </a>
+          <a href="./products.php">
+            <i class="fa-solid fa-bag-shopping"></i>
+            <span>Products</span> 
+          </a>
+          <a href="./cart.php">
+            <i class="fa-solid fa-cart-shopping"></i>
+            <span>Cart</span>
+          </a>
+          <!-- Distinguish Different Navbar by userType -->
+          <?php 
+              if ($user_data['ROLE'] == "SELLER"){
+                echo "
+                  <a href=\"./seller.php\">
+                  <i class=\"fa-solid fa-briefcase\"></i>
+                  <span>Product Management</span>
+                  </a>";
+              }
+              else if($user_data['ROLE'] == "ADMIN"){
+                echo "
+                  <a href=\"./administration.php\">
+                  <i class=\"fa-solid fa-user-tie\"></i>
+                  <span>Administration Panel</span>
+                  </a>";
+              }
+          ?>
+          <!-- /Distinguish Different Navbar by userType -->
+          <a class= "profile" onclick="subMenuToggle()">
+            <i class="fa-solid fa-circle-user fa-lg"></i>
+            <span>Profile</span>
+          </a>
+        </div>
+    
+        <!-- Profile Popup -->
+        <div class="sub-menu-wrap" id="submenu">
+          <div class="sub-menu">
+            <span id ="close-btn" onclick="subMenuToggle(); return false"><i class="fa-regular fa-circle-xmark"></i></span>
+            <div class="user-info">
+              <i class="fa-solid fa-circle-user fa-2xl"></i>
+              <span>
+                <?php 
+                  echo $user_data['NAME'] . ' ' .$user_data['SURNAME'] 
+                  . ' (' . $user_data['ROLE'] . ')'; 
+                ?>
+              </span>
+            </div>
+            <hr>
+            <div class="sub-menu-link">
+              <a href="../helper_scripts/logout.php">
+                <span class="icon">
+                  <i class="fa-solid fa-right-from-bracket fa-lg"></i>
+                </span>
+                <p>Logout</p>
+                <span class="arrow"><i class="fa-solid fa-arrow-right"></i></span>
+              </a>
+            </div>
+          </div>
+        </div>
+        <!-- Profile Popup -->
+
+        <!-- Hamburger Button -->
+        <button class="hamburger">
+          <div class="bar"></div>
+        </button> 
+      </div>
+    </nav>
+    <!-- Desktop Navbar -->
+
+    <!-- Mobile Navbar -->
+    <nav class="mobile-nav">
+      <a href="./welcome.php" class="active">
+        <i class="fa-solid fa-shop"></i>
+        <span>Home</span>
+      </a>
+      <a href="./products.php">
+        <i class="fa-solid fa-bag-shopping"></i>
+        <span>Products</span> 
+      </a>
+      <a href="./cart.php">
+        <i class="fa-solid fa-cart-shopping"></i>
+        <span>Cart</span>
+      </a>
+      <!-- Distinguish Different Navbar by userType -->
+      <?php 
+          if ($user_data['ROLE'] == "SELLER"){
+            echo "
+              <a href=\"./seller.php\">
+              <i class=\"fa-solid fa-briefcase\"></i>
+              <span>Product Management</span>
+              </a>";
+          }
+          else if($user_data['ROLE'] == "ADMIN"){
+            echo "
+              <a href=\"./administration.php\">
+              <i class=\"fa-solid fa-user-tie\"></i>
+              <span>Administration Panel</span>
+              </a>";
+          }
+      ?>
+      <a class= "profile" onclick="subMenuToggle()">
+        <i class="fa-solid fa-circle-user fa-lg"></i>
+        <span>Profile</span>
+      </a>
+    </nav>
+    <!-- Mobile Navbar -->
+    
+    <!-- Scripts -->
+    <script src="../../javascript/navbar.js"></script>
+    <script>
+      let subMenu = document.getElementById("submenu");
+
+      function subMenuToggle() {
+        subMenu.classList.toggle("open-menu");
+      }
+    </script>
+    <!-- Scripts -->
+  </body>
+</html>

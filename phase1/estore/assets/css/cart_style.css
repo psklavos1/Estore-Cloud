@@ -1,0 +1,324 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Roboto", sans-serif;
+  scroll-behavior: smooth;
+}
+
+body {
+  overflow-x: hidden;
+}
+
+.bold {
+  font-weight: bold;
+}
+
+.invisible {
+  display: none;
+}
+.euro::after {
+  content: "€";
+}
+
+.cart {
+  padding-top: 100px;
+  overflow-x: auto;
+}
+.cart .container {
+  overflow-x: auto;
+}
+
+.cart .container,
+.checkout .container {
+  padding-top: 50px;
+  color: inherit;
+  position: relative;
+  z-index: 1;
+  max-width: 1600px;
+  margin: 0 auto;
+  padding: 0 128px;
+  width: 100%;
+}
+
+.cart .container table {
+  width: 100%;
+  min-width: 850px;
+  border-collapse: collapse;
+  table-layout: fixed;
+  white-space: nowrap;
+  table-layout: fixed;
+  overflow-x: auto;
+}
+
+.cart .container table img {
+  width: 70px;
+}
+
+.cart .container table input[type="number"]:is(:focus) {
+  /* color: purple; */
+  border: 1px solid purple;
+  outline: none;
+}
+
+.cart .container table td:nth-child(1) {
+  height: 130px;
+  max-width: 100px;
+  text-align: center;
+  border-left: 1px solid #e2e9e1;
+}
+
+.cart .container table td:nth-child(2) {
+  max-width: 100px;
+  text-align: center;
+}
+
+.cart .container table td:nth-child(3) {
+  max-width: 100px;
+  text-align: center;
+}
+.cart .container table td:nth-child(4) {
+  max-width: 100px;
+  text-align: center;
+}
+.cart .container table td:nth-child(5),
+.cart .container table td:nth-child(6),
+.cart .container table td:nth-child(7) {
+  max-width: 150px;
+  text-align: center;
+}
+
+table tr td .wrapper {
+  height: auto;
+  width: 100%;
+  border: 1px solid purple;
+  background-color: transparent;
+  display: flex;
+  border-radius: 12px;
+  align-items: center;
+  justify-content: center;
+}
+
+table tr td .wrapper .item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  text-align: center;
+  font-size: 40px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+table tr td .wrapper button:hover {
+  transform: translateX(0);
+  font-size: 43px;
+}
+
+table tr td .wrapper .plus:hover {
+  transform: translateX(1px);
+}
+
+table tr td .wrapper span.number {
+  font-size: 20px;
+  border-right: 2px solid rgba(0, 0, 0, 0.2);
+  border-left: 2px solid rgba(0, 0, 0, 0.2);
+}
+
+/* table tr td .wrapper span.plus:hover {
+  color: blue;
+}
+
+table tr td .wrapper span.minus:hover {
+  color: red;
+} */
+
+.cart .container table td:nth-child(7) {
+  border-right: 1px solid #e2e9e1;
+}
+
+.cart .container table td:nth-child(6) input {
+  width: 70px;
+  padding: 10px 5px 10px 15px;
+  border: 1px solid gray;
+  border-radius: 8px;
+}
+
+.cart .container table thead {
+  border: 1px solid gray;
+  border-left: none;
+  border-right: none;
+  background-color: purple;
+  color: #fff;
+}
+
+.cart .container table thead td {
+  border: 1px solid gray;
+  font-weight: 700;
+  text-transform: uppercase;
+  font-size: 14px;
+  padding: 18px 0;
+}
+
+.cart .container table tbody tr {
+  border-bottom: 1px solid #e2e9e1;
+}
+
+.cart .container table tbody tr td {
+  border-bottom: 1px solid purple;
+  /* border-right: 1px solid #e2e9e1;
+  border-left: 1px solid #e2e9e1; */
+
+  padding-top: 15px;
+}
+
+.cart .container table tbody td {
+  font-size: 14px;
+}
+
+/* .checkout {
+  border: 2px solid black;
+} */
+.checkout .container {
+  /* border: 2px solid red; */
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  justify-content: space-between;
+  padding-top: 5%;
+}
+
+.checkout .coupon {
+  width: 45%;
+  margin-bottom: 30px;
+  margin-right: 2.5%;
+  /* border: 2px solid purple; */
+}
+
+.checkout .coupon h3,
+.checkout .subtotal h3 {
+  padding-bottom: 15px;
+}
+
+.checkout .coupon input {
+  height: 50px;
+  max-width: 400px;
+  width: 100%;
+  padding: 10px 20px;
+  outline: none;
+  margin-right: 10px;
+  border: 1px solid #e2e9e1;
+  border-radius: 8px;
+  margin-bottom: 10px;
+}
+.cart button,
+.checkout button {
+  transition: translateX 0.4s ease;
+  appearance: none;
+  border: none;
+  background: none;
+  outline: none;
+  cursor: pointer;
+
+  display: inline-block;
+  font-size: 1em;
+  color: white;
+  height: 48px;
+  background-color: purple;
+  padding: 12px 16px;
+  border-radius: 6px;
+  text-decoration: none;
+  text-transform: uppercase;
+  font-weight: 500;
+}
+
+.checkout .subtotal button {
+  min-width: 40%;
+}
+
+.cart button {
+  color: #313131;
+  background-color: transparent;
+}
+
+.cart button:hover,
+.checkout button:hover {
+  transform: translateX(2px);
+}
+.cart button:hover {
+  color: purple;
+}
+
+.coupon input:focus {
+  border-color: purple;
+}
+
+.checkout .container .subtotal {
+  /* border: 2px solid purple; */
+  width: 45%;
+  margin-left: 2.5%;
+  margin-bottom: 30px;
+
+  border: 1px solid #e2e9e1;
+  padding: 30px;
+  border-radius: 8px;
+}
+
+.checkout .container .subtotal table {
+  border-collapse: collapse;
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+.subtotal table td {
+  width: 50%;
+  border: 1px solid #e2e9e1;
+  padding: 10px;
+  font-size: 14px;
+}
+
+/* Media Queries */
+/* Ipad */
+@media (max-width: 1100px) {
+  .cart .container,
+  .checkout .container {
+    padding: 32px 64px;
+  }
+}
+
+/* Mobile */
+@media (max-width: 767px) {
+  .cart .container,
+  .checkout .container {
+    padding: 16px 32px;
+  }
+
+  .checkout .container {
+    flex-direction: column;
+  }
+  .checkout .container .coupon {
+    width: 100%;
+    padding: 10px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .checkout .container .subtotal {
+    width: 100%;
+    padding: 20px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .checkout .container .coupon button {
+    min-width: 30%;
+    font-size: 13px;
+  }
+}
+
+@media (max-width: 474px) {
+  .cart .container,
+  .checkout .container {
+    padding: 8px 16px;
+  }
+}

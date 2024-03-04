@@ -1,0 +1,222 @@
+version: "3.5"
+services:
+  ################################ APP ################################
+  app:
+    build: ./assets
+    container_name: app
+    volumes:
+      - ./assets:/var/www/html/estore/assets
+    ports:
+      - 80:80
+    depends_on:
+      - mongo-db
+      - keyrock
+    expose:
+      - 3020
+    networks:
+      myNet:
+  ########################## Mongo Express ##############################
+  mongo-express:
+    image: mongo-express:1.0.0-alpha
+    container_name: mongoexpress
+    restart: unless-stopped
+
+    environment:
+      - ME_CONFIG_MONGODB_ADMINUSERNAME=root
+      - ME_CONFIG_MONGODB_ADMINPASSWORD=pass
+      - ME_CONFIG_MONGODB_URL=mongodb://root:pass@mongo-db:27017/?authSource=admin
+    ports:
+      - 8081:8081
+    links:
+      - mongo-db
+    depends_on:
+      - mongo-db
+    networks:
+      myNet:
+  ###################### Mongo For App data storage #######################
+  mongo-db:
+    image: mongo:6.0.3
+    hostname: "mongo-db"
+    container_name: "mongo-db"
+    restart: unless-stopped
+    volumes:
+      - mongodb:/data/db
+      # - mongodb/dev.archive:/Databases/dev.archive
+      # - mongodb/production:/Databases/production
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: pass
+      MONGO_INITDB_DATABASE: estore
+    ports:
+      - 27018:27017
+    expose:
+      - 27018
+    networks:
+      myNet:
+  ################### Mongo For Orion data storage ########################
+  mongo-orion:
+    image: mongo:6.0.3
+    hostname: mongo-orion
+    container_name: mongo-orion
+    expose:
+      - 27017
+    ports:
+      - 27017:27017
+    networks:
+      - myNet
+    volumes:
+      - mongodb_orion:/data/db
+
+  ############################ Orion Broker ################################
+  orion:
+    restart: always
+    image: fiware/orion
+    hostname: orion
+    container_name: orion
+    depends_on:
+      - mongo-db
+      - keyrock
+    networks:
+      - myNet
+    expose:
+      - 1026
+    ports:
+      - 1026:1026
+    command: -dbhost mongo-orion -logLevel DEBUG -noCache
+  ######################### Orion Broker Proxy #############################
+  orion-proxy:
+    image: fiware/pep-proxy
+    container_name: orion-proxy
+    hostname: orion-proxy
+    networks:
+      myNet:
+        ipv4_address: 172.18.1.12
+    depends_on:
+      - orion
+    ports:
+      - 1027:1027
+    expose:
+      - 1027
+    environment:
+      - PEP_PROXY_APP_HOST=orion
+      - PEP_PROXY_APP_PORT=1026
+      - PEP_PROXY_PORT=1027
+      - PEP_PROXY_IDM_HOST=keyrock
+      - PEP_PROXY_HTTPS_ENABLED=false
+      - PEP_PROXY_AUTH_ENABLED=false
+      - PEP_PROXY_IDM_SSL_ENABLED=false
+      - PEP_PROXY_IDM_PORT=3005
+      - PEP_PROXY_APP_ID=dc7c8057-6cc5-40f9-92b9-ec7ef20e284c
+      - PEP_PROXY_USERNAME=pep_proxy_e580b05c-e416-4964-902c-4800f7b6e8b1
+      - PEP_PROXY_PASSWORD=pep_proxy_08fdea60-38a0-4679-9747-e40b968de0c0
+      - PEP_PROXY_PDP=idm
+      - PEP_PROXY_MAGIC_KEY=1234
+  ############################## Keyrock ##################################
+  keyrock:
+    image: fiware/idm:7.6.0
+    container_name: keyrock
+    hostname: keyrock
+    networks:
+      myNet:
+        ipv4_address: 172.18.1.5
+    depends_on:
+      - mysql-db
+    ports:
+      - "3005:3005"
+      - "3443:3443"
+    environment:
+      - DEBUG=idm:*
+      - IDM_DB_HOST=mysql-db
+      - IDM_HOST=http://localhost:3005
+      - IDM_PORT=3005
+      - IDM_HTTPS_ENABLED=false
+      - IDM_HTTPS_PORT=3443
+      # Development use only
+      # Use Docker Secrets for Sensitive Data
+      - IDM_DB_PASS=secret
+      - IDM_DB_USER=root
+      - IDM_ADMIN_USER=admin
+      - IDM_ADMIN_EMAIL=admin@test.com
+      - IDM_ADMIN_PASS=1234
+  ############################## Mysql Db ##################################
+  mysql-db:
+    restart: always
+    image: mysql:5.7
+    hostname: mysql-db
+    container_name: mysql-db
+    expose:
+      - "3306"
+    ports:
+      - "3306:3306"
+    networks:
+      myNet:
+        ipv4_address: 172.18.1.6
+    environment:
+      # Development use only
+      # Use Docker Secrets for Sensitive Data
+      - "MYSQL_ROOT_PASSWORD=secret"
+      - "MYSQL_ROOT_HOST=172.18.1.5"
+    volumes:
+      - mysqldb:/var/lib/mysql
+
+  ############################## Data Storage ##################################
+  data-storage:
+    build: ./data_storage
+    hostname: data-storage
+    container_name: data-storage
+    volumes:
+      - ./data_storage:/var/www/html/
+    networks:
+      - myNet
+    expose:
+      - 80
+    ports:
+      - 3010:80
+  ######################### Data Storage Wilma Proxy ############################
+  data-storage-proxy:
+    image: fiware/pep-proxy
+    container_name: data-storage-proxy
+    hostname: data-storage-proxy
+    networks:
+      myNet:
+        ipv4_address: 172.18.1.10
+    depends_on:
+      keyrock:
+        condition: service_started
+    deploy:
+      restart_policy:
+        condition: on-failure
+    ports:
+      - "3020:3020"
+    expose:
+      - "3020"
+    environment:
+      - DEBUG=pep-proxy:*
+      - PEP_PROXY_DEBUG=true
+      - PEP_PROXY_APP_HOST=data-storage
+      - PEP_PROXY_APP_PORT=80
+      - PEP_PROXY_PORT=3020
+      - PEP_PROXY_IDM_HOST=keyrock
+      - PEP_PROXY_HTTPS_ENABLED=false
+      - PEP_PROXY_AUTH_ENABLED=false
+      - PEP_PROXY_IDM_SSL_ENABLED=false
+      - PEP_PROXY_IDM_PORT=3005
+      - PEP_PROXY_APP_ID=dc7c8057-6cc5-40f9-92b9-ec7ef20e284c
+      - PEP_PROXY_USERNAME=pep_proxy_e580b05c-e416-4964-902c-4800f7b6e8b1
+      - PEP_PROXY_PASSWORD=pep_proxy_08fdea60-38a0-4679-9747-e40b968de0c0
+      - PEP_PROXY_PDP=idm
+      - PEP_PROXY_MAGIC_KEY=1234
+      - PEP_PROXY_PUBLIC_PATHS=/version
+    healthcheck:
+      interval: 50s
+######################### Volumes ############################
+volumes:
+  mysqldb:
+  mongodb:
+  mongodb_orion:
+######################### Networks ############################
+networks:
+  myNet:
+    ipam:
+      config:
+        - subnet: 172.18.1.0/24
